@@ -1,9 +1,9 @@
 <template>
   <div class="home width100pec backColorf4f5f5">
     <div class="width100pec backColorFFF nav-shadow fixed top0">
-      <nav-bar :isSelected="isNavSelected" @navClick="navClick" @handleLRClick="handleLRClick"></nav-bar>  
+      <nav-bar :isSelected="isNavSelected" :isLogin="isLogin" :userInfo="userInfo" @navClick="navClick" @handleLRClick="handleLRClick" @handleLogout="handleLogout" @handleSearch="handleSearch"></nav-bar>  
     </div>
-    <div class="width80pec marginXauto100X">
+    <div class="width80pec marginXauto paddingTop100">
       <div class="width65pec article-list-shadow backColorFFF">
         <div class="paddingX10">
           <filter-bar :isSelected="isFilterSelected" @hanldeClick="filterClick"></filter-bar>
@@ -56,6 +56,8 @@ export default {
     return {
       loading: null,
       isNavSelected: "news",
+      isLogin: false,
+      userInfo: {},
       isFilterSelected: "recommend",
       // articleList: test.testData,
       articleList: [],
@@ -78,11 +80,6 @@ export default {
     register
   },
   mounted() {
-    httpRequest.postTest({"test": "postTest"}).then( res => {
-        console.error(res);
-      }).catch( err => {
-        console.error(err);
-      });
     this.loading = Loading.service({ 
       lock: true,
       text: 'Loading',
@@ -125,7 +122,7 @@ export default {
         });
         setTimeout(() => {
           this.loading.close();
-        }, 1000);
+        }, 500);
         this.isReflash = false;
         this.loadNewsParam.pageNum ++;
       }).catch( err => {
@@ -139,8 +136,36 @@ export default {
       }, 1000);
     },
     handleLogin(formLogin) {
-      console.log(formLogin);
+      // debugger
+      httpRequest.postLogin(formLogin).then( res => {
+        console.log(res);
+        if(res.data) {
+          this.userInfo = res.data.userInfo;
+          this.isLogin = true;
+          this.rlVisible = false;
+          this.loading = Loading.service({ 
+            lock: true,
+            text: 'Login...',
+            background: 'rgba(0, 0, 0, 0.7)'
+          });
+          setTimeout(() => {
+            this.loading.close();
+          }, 800);
+        }
+      }).catch( err => {
+        this.$message({
+          type: "error",
+          message: err.ret_msg,
+          center: true
+        });
+      });
     },
+    handleLogout() {
+      window.location.reload();
+    },
+    handleSearch(searchStr) {
+      console.log(searchStr);
+    }
   }
 };
 </script>
