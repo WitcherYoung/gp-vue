@@ -8,10 +8,10 @@
       </div>
       <div class="nav-menu">
         <ul class="bold">
-          <li class="paddingX10" @click="hanldeClick('news')"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected=='news'}">资讯</span></li>
-          <li class="paddingX10" @click="hanldeClick('food')"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected=='food'}">美食</span></li>
-          <li class="paddingX10" @click="hanldeClick('play')"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected=='play'}">游玩</span></li>
-          <li class="paddingX10" @click="hanldeClick('fun')"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected=='fun'}">趣事</span></li>
+          <li class="paddingX10" @click="hanldeClick(1)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==1}">资讯</span></li>
+          <li class="paddingX10" @click="hanldeClick(2)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==2}">美食</span></li>
+          <li class="paddingX10" @click="hanldeClick(3)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==3}">游玩</span></li>
+          <li class="paddingX10" @click="hanldeClick(4)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==4}">趣事</span></li>
         </ul>
       </div>
     </div>
@@ -58,8 +58,8 @@ export default {
   },
   props: {
     isSelected: {
-      type: String,
-      default: "recommend"
+      type: Number,
+      default: 1
     },
     isLogin: {
       type: Boolean,

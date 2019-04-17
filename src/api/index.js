@@ -78,7 +78,7 @@ const post = (url, param) => {
 
 const getTest = () => get(baseURL + '/getTest');
 const postTest = (param) => post(baseURL + '/postTest', param);
-const getNews = (param) => get(baseURL + '/loadNews', param);
+const getArticles = (param) => get(baseURL + '/loadArticles', param);
 
 const postRegister = (param) => post(baseURL + '/register', param);
 const postLogin = (param) => post(baseURL + '/login', param);
@@ -86,7 +86,7 @@ const postLogin = (param) => post(baseURL + '/login', param);
 export default {
     getTest,
     postTest,
-    getNews,
+    getArticles,
     postRegister,
     postLogin
 }
