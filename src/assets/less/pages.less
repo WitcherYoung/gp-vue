@@ -1,14 +1,16 @@
-.home {
-    .title {
-        
-    }
+.home,
+.details {
+    .title {}
+
     .register-login {
         .el-dialog__header {
             border-bottom: 1px solid hsla(0, 0%, 59.2%, .1);
         }
+
         .el-dialog__body {
             padding: 0 0 20px 0;
         }
+
         .title {
             .select {
                 display: inline-block;
@@ -21,13 +23,77 @@
                 -moz-transition: .5s;
                 -o-transition: .5s;
             }
+
             .selected {
                 color: #003f80;
             }
+
             .select:hover {
                 border-bottom: 1px solid #003f80;
                 cursor: pointer
             }
+        }
+    }
+}
+
+.details {
+    .article-content {
+        span {
+            line-height: 25px
+        }
+    }
+
+    .mark-hover {
+        transition: .5s;
+        -webkit-transition: .5s;
+        -moz-transition: .5s;
+        -o-transition: .5s;
+    }
+
+    .mark-hover:hover {
+        color: #0068d1;
+        cursor: pointer;
+    }
+}
+
+.tags {
+    .el-transfer {
+        .el-transfer-panel {
+            width: 40%;
+            height: 600px;
+            border: none;
+            .el-transfer-panel__body {
+                height: 100%;
+            }
+            .el-checkbox-group {
+                .el-transfer-panel__item {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding-left: 30%;
+                    .el-checkbox__label {
+                        text-align: left;
+                    }
+                }
+                .el-checkbox__input {
+                    position: static;
+                    margin-top: 1px;
+                }
+            }
+            .el-transfer-panel__list {
+                height: 450px;
+            }
+        }
+        .el-checkbox:last-child {
+            color: #606266;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            margin-right: 30px;
         }
     }
 }

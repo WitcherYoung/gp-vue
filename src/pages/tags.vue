@@ -1,19 +1,33 @@
 <template>
-  <div class="home width100pec backColorf4f5f5">
+  <div class="tags width100pec backColorf4f5f5">
     <div class="width100pec backColorFFF nav-shadow fixed z2000 top0">
       <nav-bar :isSelected="isNavSelected" :isLogin="isLogin" :userInfo="userInfo" @navClick="navClick" @handleLRClick="handleLRClick" @handleLogout="handleLogout" @handleSearch="handleSearch"></nav-bar>  
     </div>
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
-      <div class="width75pec article-list-shadow backColorFFF">
-        <div class="paddingX10">
-          <filter-bar :isSelected="isFilterSelected" @hanldeClick="filterClick"></filter-bar>
-          <article-list :articleType="isNavSelected" :articleList="articleList"></article-list>
+      <div class="width75pec article-list-shadow padding20X backColorFFF">
+        <el-transfer
+            v-model="chosenArr"
+            filterable
+            :titles="['待选', '关注']"
+            :button-texts="['移除', '添加']"
+            :data="allTags">
+        </el-transfer>
+        <div class="btn-save-tags flex-row-reverse paddingX50">
+          <el-button type="primary" size="small" @click="handleSaveTags()">保存</el-button>
         </div>
-        <div>
-          <load-more :isReflash="isReflash" @handleLoad="handleLoad()"></load-more>
-        </div>
+        <!-- <el-transfer
+            v-model="value3"
+            filterable
+            :titles="['Source', 'Target']"
+            :button-texts="['到左边', '到右边']"
+            @change="handleTransferChange"
+            :data="data">
+            <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
+            <el-button class="transfer-footer" slot="right-footer" size="small">操作</el-button>
+        </el-transfer> -->
       </div>
+      <div class="width25pec"></div>
     </div>
     <div class="right-bar"></div>
     <div class="width100pec backColorFFF">
@@ -37,14 +51,12 @@
 </template>
 
 <script>
-// import test from "../../static/data/testData.js"
+import test from "../../static/data/testData.js"
 import httpRequest from "@/api";
 import tools from "@/utils/tools.js"
 import axios from "axios";
 // 自定义组件
 import navBar from "@/components/NavBar.vue";
-import filterBar from "@/components/FilterBar.vue";
-import articleList from "@/components/ArticleList.vue";
 import personalSideCard from "@/components/PersonalSideCard.vue";
 import loadMore from "@/components/LoadMore.vue";
 import footerBar from "@/components/FooterBar.vue";
@@ -59,25 +71,21 @@ export default {
       loading: null,
       isNavSelected: 1,
       isLogin: false,
+      isCollected: false,
+      isLiked: false,
       userInfo: {},
-      isChangeNav: false,
-      isFilterSelected: "recommend",
-      // articleList: test.testData,
-      articleList: [],
-      isReflash: false,
-      loadParam: {
+      articleParam: {
         newsType: 1,
-        filterType: 1,
-        pageNum: 1,
+        newsId: 1,
       },
       rlVisible: false,
       dialogRLType: null,
+      allTags: [],
+      chosenArr: [],
     }
   },
   components: {
     navBar,
-    filterBar,
-    articleList,
     personalSideCard,
     loadMore,
     footerBar,
@@ -85,22 +93,19 @@ export default {
     register
   },
   mounted() {
-    if(this.$store.state.isNavSelected != 1) {
-      this.isNavSelected = this.$store.state.isNavSelected;
-      this.loadParam.newsType = this.$store.state.isNavSelected;
-    }
+    this.articleParam.newsType = this.$route.query.newsType;
+    this.articleParam.newsId = this.$route.query.id;
+    this.isNavSelected = this.$store.state.isNavSelected;
     if(sessionStorage.getItem("userInfo")) {
       this.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
       this.isLogin = true;
     }
-    this.loading = Loading.service({
-      lock: true,
-      text: 'Loading',
-      background: 'rgb(255, 255, 255)'
-    });
-    setTimeout(() => {
-      this.getArticleList();
-    }, 500);
+    this.getTags();
+    // this.loading = Loading.service({
+    //   lock: true,
+    //   text: 'Loading',
+    //   background: 'rgb(255, 255, 255)'
+    // });
   },
   methods: {
     // 交互
@@ -112,10 +117,11 @@ export default {
       this.isNavSelected = navType;
       // 改变 this.$store.state.isNavSelected
       this.$store.commit("changeIsNavSelected", navType);
-      this.loadParam.newsType = navType;
-      this.isChangeNav = true;
-      this.loadParam.pageNum = 1;
-      this.getArticleList();
+      if(this.$route.name!="home") {
+        this.$router.push({
+          path: "/"
+        })
+      }
     },
     handleLRClick(rlType) {
       this.dialogRLType = rlType;
@@ -127,46 +133,23 @@ export default {
     switchVal(switchType) {
       this.dialogRLType = switchType;
     },
-    filterClick(filterType) {
-      this.isFilterSelected = filterType;
-    },
     // 前端逻辑
-    // 请求
-    getArticleList() {
-      httpRequest.getArticles(this.loadParam).then( res => {
-        // 判断导航菜单是否切换
-        if(!this.isChangeNav) {
-          // 导航菜单未切换, 判断查询页数
-          if(this.loadParam.pageNum == 1) {
-            this.articleList = res.data.articleList
-          }else {
-            this.articleList = this.articleList.concat(res.data.articleList);
-          }
-        }else {
-          // 导航菜单切换, 查询第一页数据
-          this.articleList = res.data.articleList;
-          this.isChangeNav = false;
-        }
-        if(this.loadParam.newsType == 1|| this.loadParam.newsType == 4) {
-          this.articleList.forEach((item, index, array) => {
-            item.time = tools.transferDate(item.time.substring(0,10))
-          });
-        }
-        setTimeout(() => {
-          this.loading.close();
-        }, 500);
-        this.isReflash = false;
-        this.loadParam.pageNum ++;
+    getTags() {
+      let param = {};
+      param.name = this.userInfo.name;
+      httpRequest.getTags(param).then( res => {
+        // console.log(res);
+        this.allTags = res.data.notSelected;
+        this.chosenArr = res.data.selected;
       }).catch( err => {
-        console.error(err);
+        this.$message({
+          type: "error",
+          message: err.ret_msg,
+          center: true
+        });
       });
     },
-    handleLoad() {
-      this.isReflash = true;
-      setTimeout(() => {
-        this.getArticleList();
-      }, 1000);
-    },
+    // 请求
     handleLogin(formLogin) {
       // debugger
       httpRequest.postLogin(formLogin).then( res => {
@@ -234,7 +217,27 @@ export default {
     },
     handleSearch(searchStr) {
       console.log(searchStr);
-    },    
+    },
+    handleTransferChange(value, direction, movedKeys) {
+      console.log(value, direction, movedKeys);
+    },
+    handleSaveTags() {
+      console.log(this.chosenArr);
+      let param = {};
+      param.name = this.userInfo.name;
+      param.chosenStr = this.chosenArr.join("-");
+      console.log(param);
+      httpRequest.saveTags(param).then( res => {
+        console.log(res);
+        this.getTags();
+      }).catch( err => {
+        this.$message({
+          type: "error",
+          message: err.ret_msg,
+          center: true
+        });
+      });
+    }
   }
 };
 </script>

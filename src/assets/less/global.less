@@ -3,6 +3,34 @@
     margin: 0;
 }
 
+html,
+body {
+    scroll-behavior: smooth;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 10px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(54, 54, 54, 0.3);
+    border-radius: 10px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #bbb;
+    -webkit-box-shadow: inset 0 0 6px rgba(59, 59, 59, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(53, 53, 53, 0.4);
+}
+
 .inline-block {
     display: inline-block;
 }
@@ -14,6 +42,11 @@
 .flex-row {
     display: flex;
     flex-direction: row;
+}
+
+.flex-row-reverse {
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .flex-column {
@@ -61,8 +94,32 @@
     position: fixed;
 }
 
+.absolute {
+    position: absolute;
+}
+
 .top0 {
     top: 0;
+}
+
+.right0 {
+    right: 0;
+}
+
+.right10pec {
+    right: 10%;
+}
+
+.right15pec {
+    right: 10%;
+}
+
+.right18pec {
+    right: 18%;
+}
+
+.bottom100px {
+    bottom: 100px
 }
 
 .width10pec {
@@ -101,6 +158,9 @@
     width: 70%
 }
 
+.width75pec {
+    width: 75%
+}
 
 .width80pec {
     width: 80%
@@ -112,6 +172,18 @@
 
 .width100px {
     width: 100px
+}
+
+.width200px {
+    width: 200px
+}
+
+.width230px {
+    width: 230px
+}
+
+.width250px {
+    width: 250px
 }
 
 .height80 {
@@ -126,6 +198,10 @@
     padding-bottom: 2px;
 }
 
+.border-radius5 {
+    border-radius: 5px;
+}
+
 .border-radius {
     border-radius: 50%;
 }
@@ -138,6 +214,10 @@
     padding: 10px
 }
 
+.padding20 {
+    padding: 20px;
+}
+
 .paddingX5 {
     padding-left: 5px;
     padding-right: 5px;
@@ -146,6 +226,11 @@
 .paddingX10 {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.paddingX20 {
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .paddingX50 {
@@ -176,6 +261,10 @@
 .padding20X {
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+.paddingTop20 {
+    padding-top: 20px;
 }
 
 .paddingTop100 {
@@ -255,12 +344,24 @@
     border-bottom: 2px solid black
 }
 
+.bottom-lineb7b7b7s {
+    border-bottom: 1px solid #b7b7b7
+}
+
 .borderb7b7b7 {
     border: 1px dashed #b7b7b7
 }
 
 .font-size20 {
     font-size: 20px;
+}
+
+.font-size25 {
+    font-size: 25px;
+}
+
+.font-size30 {
+    font-size: 30px;
 }
 
 .font-size40 {
@@ -291,12 +392,16 @@
     color: #FF3030;
 }
 
-.colorGreen {
-    color: green;
+.colorFF4500 {
+    color: rgba(255, 69, 0, .8) // color: #FF4500;
 }
 
-.color898989 {
-    color: #898989;
+.colorffc347 {
+    color: #ffc347
+}
+
+.colorGreen {
+    color: green;
 }
 
 .color409EFF {
@@ -307,24 +412,109 @@
     color: #8c8c8c;
 }
 
+.color898989 {
+    color: #898989;
+}
+
+.color999999 {
+    color: #999999;
+}
+
+.coloradadad {
+    color: #adadad;
+}
+
+.colorbbbbbb {
+    color: #bbbbbb;
+}
+
+.colorcccccc {
+    color: #cccccc;
+}
+
+.color8B8B7A {
+    color: #8B8B7A;
+}
+
 .backColorf4f5f5 {
     background-color: #f4f5f5;
+}
+
+.backColorEEEED1 {
+    background-color: #EEEED1;
 }
 
 .backColorFFF {
     background-color: #ffffff;
 }
 
+.circle {
+    border: 1px solid #8c8c8c;
+    border-radius: 50%;
+}
+
+.z2000 {
+    z-index: 2000
+}
+
+.z5000 {
+    z-index: 5000
+}
+
+.z10000 {
+    z-index: 10000
+}
+
 // artilce-list-shadow
-.article-list-shadow {
+.article-list-shadow,
+.side-card-shadow {
     -moz-box-shadow: 1px 1px 5px #c9c9c9;
     -webkit-box-shadow: 1px 1px 5px #c9c9c9;
     box-shadow: 1px 1px 5px #c9c9c9;
 }
 
-.article-list-shadow:hover {
+.article-list-shadow:hover,
+.side-card-shadow:hover {
     // cursor: pointer;
     -moz-box-shadow: 1px 3px 5px #adadad;
     -webkit-box-shadow: 1px 3px 5px #adadad;
     box-shadow: 1px 3px 5px #adadad;
+}
+
+// artilce-list-shadow
+.side-card-shadow {
+    transition: .6s;
+    -webkit-transition: .6s;
+    -moz-transition: .6s;
+    -o-transition: .6s;
+    -moz-box-shadow: 1px 1px 5px #c9c9c9;
+    -webkit-box-shadow: 1px 1px 5px #c9c9c9;
+    box-shadow: 1px 1px 5px #c9c9c9;
+}
+
+.side-card-shadow:hover {
+    // cursor: pointer;
+    -moz-box-shadow: 1px 1px 10px #adadad;
+    -webkit-box-shadow: 1px 1px 10px #adadad;
+    box-shadow: 1px 1px 10px #adadad;
+}
+
+// btn-circle-shadow 
+.btn-circle-shadow {
+    -moz-box-shadow: 1px 3px 5px #c9c9c9;
+    -webkit-box-shadow: 1px 3px 5px #c9c9c9;
+    box-shadow: 1px 3px 5px #c9c9c9;
+}
+
+.btn-circle-shadow:hover {
+    // cursor: pointer;
+    -moz-box-shadow: 1px 3px 15px #adadad;
+    -webkit-box-shadow: 1px 3px 15px #adadad;
+    box-shadow: 1px 3px 15px #adadad;
+}
+
+//修改ElementUI默认样式
+.el-popover {
+    left: 1126px !important;
+    min-width: 100px;
 }

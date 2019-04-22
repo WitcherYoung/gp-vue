@@ -79,14 +79,26 @@ const post = (url, param) => {
 const getTest = () => get(baseURL + '/getTest');
 const postTest = (param) => post(baseURL + '/postTest', param);
 const getArticles = (param) => get(baseURL + '/loadArticles', param);
+const getDetails = (param) => get(baseURL + '/details', param);
+const getCollectedLiked = (param) => get(baseURL + '/collectedLiked', param);
+const getTags = (param) => get(baseURL + '/tags', param);
 
 const postRegister = (param) => post(baseURL + '/register', param);
-const postLogin = (param) => post(baseURL + '/login', param);
+const postLogin = (param) => post(baseURL + '/login', param); 
+const postCollected = (param) => post(baseURL + '/collect', param);
+const postLiked = (param) => post(baseURL + '/like', param);
+const saveTags = (param) => post(baseURL + '/saveTags', param);
 
 export default {
     getTest,
     postTest,
     getArticles,
     postRegister,
-    postLogin
+    postLogin,
+    getDetails,
+    postCollected,
+    postLiked,
+    getCollectedLiked,
+    getTags,
+    saveTags
 }

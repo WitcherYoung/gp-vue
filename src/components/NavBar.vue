@@ -34,7 +34,7 @@
           <el-button type="text" @click="handleLRClick('login')">登录</el-button><span class="color409EFF">/</span><el-button type="text"  @click="handleLRClick('register')">注册</el-button>
         </div>
         <div v-show="isLogin">
-          <el-popover ref="userMenu" placement="bottom" width="150">
+          <el-popover ref="userMenu" placement="bottom" width="100">
             <div>
               <popover-menu :userInfo="userInfo" @handleLogout="handleLogout"></popover-menu>
             </div>
