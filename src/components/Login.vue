@@ -3,8 +3,8 @@
     <div class="form-login width100pec">
       <el-form class="width60pec padding10X paddingX60 marginXauto" label-position="left" label-width="80px" :model="formLogin">
         <el-form-item class="form-item-login">
-          <div slot="label"><span> 用户名</span></div>
-          <el-input type="text" v-model="formLogin.username" placeholder="请输入用户名"></el-input>
+          <div slot="label"><span> 账号</span></div>
+          <el-input type="text" v-model="formLogin.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item v-if="visible" class="form-item-login">
           <div slot="label"><span> 密码</span></div>

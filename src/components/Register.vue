@@ -3,13 +3,13 @@
     <div class="form-register width100pec">
       <el-form class="padding10X paddingX60" label-position="left" label-width="80px" :model="formRegister">
         <el-form-item class="form-item-register">
-          <div slot="label"><span class="required">*</span><span> 用户名</span></div>
-          <el-input v-model="formRegister.username" placeholder="请输入用户名..."></el-input>
+          <div slot="label"><span class="required">*</span><span> 账号</span></div>
+          <el-input v-model="formRegister.username" placeholder="请输入账号..."></el-input>
           <span class="tip">2~8个字符, 需以字母开头, 可使用字母、数字、下划线</span>
         </el-form-item>
         <el-form-item class="form-item-register">
-          <div slot="label"><span class="required">&nbsp;</span><span> 昵称</span></div>
-          <el-input v-model="formRegister.name" placeholder="请输入昵称..."></el-input>
+          <div slot="label"><span class="required">&nbsp;</span><span> 用户名</span></div>
+          <el-input v-model="formRegister.name" placeholder="请输入用户名..."></el-input>
           <span class="tip">2~8个字符, 需以字母或中文开头, 可使用字母、中文、数字、下划线</span>
         </el-form-item>
         <el-form-item class="form-item-register">

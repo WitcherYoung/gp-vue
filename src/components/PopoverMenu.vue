@@ -2,12 +2,12 @@
   <div class="popover-menu">
     <ul>
       <li>
-        <div class="flex-space-between">
-          <span class="username">{{userInfo.name}}</span>
+        <div class="flex-space-between paddingX5">
+          <span class="inline-block username">{{userInfo.name}}</span>
         </div>
       </li>
       <li>
-        <div class="flex-align-start padding5 popover-menu-item" >
+        <div class="flex-align-start padding5 popover-menu-item" @click="handleInfo()">
           <span class="popover-menu-icon color898989"><i class="fa fa-user"></i></span>
           <span class="">主页</span>
         </div>
@@ -30,6 +30,11 @@ export default {
     }
   },
   methods: {
+    handleInfo() {
+      this.$router.push({
+        path: "/userInfo",
+      });
+    },
     handleLogout() {
       this.$emit("handleLogout");
     }

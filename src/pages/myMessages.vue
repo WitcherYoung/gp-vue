@@ -6,7 +6,7 @@
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
       <div class="width75pec article-list-shadow backColorFFF">
-        <messages></messages>
+        <messages :messageType="'myMessages'" :title="'我的消息'" :showReplay="true"></messages>
       </div>
       <div class="width25pec"></div>
     </div>

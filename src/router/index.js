@@ -7,6 +7,7 @@ import star from '@/pages/star'
 import approve from '@/pages/approve'
 import myComments from '@/pages/myComments'
 import myMessages from '@/pages/myMessages'
+import userInfo from '@/pages/userInfo'
 
 // const loadComponent = (componentName, resolve) => require(["@/pages/" + componentName], resolve);
 
@@ -68,6 +69,14 @@ const router = new Router({
       component: myMessages,
       meta: {
         title: "我的消息"
+      },
+    },
+    {
+      path: '/userInfo',
+      name: 'userInfo',
+      component: userInfo,
+      meta: {
+        title: "个人主页"
       },
     }
   ],

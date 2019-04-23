@@ -5,7 +5,12 @@
     </div>
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
-      <div class="width75pec article-list-shadow padding20X backColorFFF">
+      <div class="width75pec article-list-shadow paddingBottom20 backColorFFF">
+        <div class="side-card-title bold font-size20 padding10">
+          <span class="padding5X paddingX10">
+            <i class="fa fa-tags card-tags" style="color: #1A8A66"></i> 管理标签
+          </span>
+        </div>
         <el-transfer
             v-model="chosenArr"
             filterable
@@ -229,6 +234,19 @@ export default {
       console.log(param);
       httpRequest.saveTags(param).then( res => {
         console.log(res);
+        if(res.ret_code == 400) {
+          this.$message({
+            type: "error",
+            message: res.err_msg,
+            center: true
+          });
+        }else {
+          this.$message({
+            type: "success",
+            message: "修改成功",
+            center: true
+          });
+        }
         this.getTags();
       }).catch( err => {
         this.$message({

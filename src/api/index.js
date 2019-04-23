@@ -82,12 +82,17 @@ const getArticles = (param) => get(baseURL + '/loadArticles', param);
 const getDetails = (param) => get(baseURL + '/details', param);
 const getCollectedLiked = (param) => get(baseURL + '/collectedLiked', param);
 const getTags = (param) => get(baseURL + '/tags', param);
+const getStaredApproved = (param) => get(baseURL + '/staredApproved', param);
+const getComments = (param) => get(baseURL + '/getComments', param);
+const getPersonalInfo = (param) => get(baseURL + '/getPersonalInfo', param);
 
 const postRegister = (param) => post(baseURL + '/register', param);
 const postLogin = (param) => post(baseURL + '/login', param); 
 const postCollected = (param) => post(baseURL + '/collect', param);
 const postLiked = (param) => post(baseURL + '/like', param);
 const saveTags = (param) => post(baseURL + '/saveTags', param);
+const postComment = (param) => post(baseURL + '/addComment', param);
+const postPersonalInfo = (param) => post(baseURL + '/updateInfo', param);
 
 export default {
     getTest,
@@ -100,5 +105,10 @@ export default {
     postLiked,
     getCollectedLiked,
     getTags,
-    saveTags
+    saveTags,
+    getStaredApproved,
+    postComment,
+    getComments,
+    getPersonalInfo,
+    postPersonalInfo
 }

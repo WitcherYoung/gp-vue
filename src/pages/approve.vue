@@ -6,7 +6,7 @@
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
       <div class="width75pec article-list-shadow backColorFFF">
-        <personal-articles :articleList="articleList"></personal-articles>
+        <personal-articles :articleList="articleList" :title="'我赞过的'"></personal-articles>
       </div>
       <div class="width25pec"></div>
     </div>
@@ -82,6 +82,7 @@ export default {
       this.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
       this.isLogin = true;
     }
+    this.getApprovedList()
     // this.loading = Loading.service({
     //   lock: true,
     //   text: 'Loading',
@@ -115,7 +116,27 @@ export default {
       this.dialogRLType = switchType;
     },
     // 前端逻辑
-
+    getApprovedList() {
+      let param = {};
+      param.name = this.userInfo.name;
+      param.conditionCol = 1;
+      httpRequest.getStaredApproved(param).then( res => {
+        // console.log(res);
+        let articleList = res.data.articleList;
+        articleList.forEach((item, index, array) => {
+            if(item.articleType == 1 || item.articleType == 4) {
+              item.time = tools.transferDate(item.time.substring(0,10))
+            }
+          });
+        this.articleList = articleList;
+      }).catch( err => {
+        this.$message({
+          type: "error",
+          message: err.ret_msg,
+          center: true
+        });
+      });
+    },
     // 请求
     handleLogin(formLogin) {
       // debugger

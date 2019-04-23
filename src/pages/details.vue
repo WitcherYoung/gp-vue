@@ -28,6 +28,10 @@
             </div>
           </div>
         </div>
+        <div class="marginXauto100X borderb7b7b7" style="width: 90%;"></div>
+        <div class="article-comments">
+          <messages :messageType="'details'" :showTitle="false" :showBar="true" :showReplay="true"></messages>
+        </div>
       </div>
     </div>
     <div class="right-bar"></div>
@@ -59,6 +63,7 @@ import axios from "axios";
 // 自定义组件
 import navBar from "@/components/NavBar.vue";
 import personalSideCard from "@/components/PersonalSideCard.vue";
+import Messages from "@/components/Messages.vue";
 import loadMore from "@/components/LoadMore.vue";
 import footerBar from "@/components/FooterBar.vue";
 import login from "@/components/login.vue";
@@ -94,6 +99,7 @@ export default {
   components: {
     navBar,
     personalSideCard,
+    Messages,
     loadMore,
     footerBar,
     login,

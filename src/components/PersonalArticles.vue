@@ -1,7 +1,17 @@
 <template>
-  <div class="article-list">
+  <div class="personal-article-list article-list padding10">
     <div v-if="articleList.length == 0" class="no-data padding20"></div>
-    <div v-else>
+    <div v-else class="minHeight470">
+      <div v-if="title == '我的收藏'" class="side-card-title bold font-size20">
+        <span class="padding5X paddingX10">
+          <i class="fa fa-star card-star" style="color: #ffc347"></i> {{title}}
+        </span>
+      </div>
+      <div v-else-if="title == '我赞过的'" class="side-card-title bold font-size20">
+        <span class="padding5X paddingX10">
+          <i class="fa fa-thumbs-up card-thumbs-up" style="color: rgba(255, 69, 0, 0.8)"></i> {{title}}
+        </span>
+      </div>
       <div v-for="(item, index) in articleList" :key="index">
         <div class="article-item flex-row flex-align-center">
           <div class="article-item-img">
@@ -68,6 +78,10 @@ export default {
     };
   },
   props: {
+    title: {
+      type: String,
+      default: ""
+    },
     articleList: {
       type: Array,
       default: []

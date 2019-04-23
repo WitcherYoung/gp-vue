@@ -6,7 +6,9 @@
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
       <div class="width75pec article-list-shadow backColorFFF">
-        <personal-articles :articleList="articleList" :title="'我的收藏'"></personal-articles>
+        <div class="padding20">
+            <user-data></user-data>
+        </div>
       </div>
       <div class="width25pec"></div>
     </div>
@@ -38,7 +40,7 @@ import tools from "@/utils/tools.js"
 import axios from "axios";
 // 自定义组件
 import navBar from "@/components/NavBar.vue";
-import personalArticles from "@/components/PersonalArticles.vue";
+import UserData from "@/components/UserData.vue";
 import personalSideCard from "@/components/PersonalSideCard.vue";
 import loadMore from "@/components/LoadMore.vue";
 import footerBar from "@/components/FooterBar.vue";
@@ -60,14 +62,13 @@ export default {
         newsType: 1,
         newsId: 1,
       },
-      articleList: [],
       rlVisible: false,
       dialogRLType: null,
     }
   },
   components: {
     navBar,
-    personalArticles,
+    UserData,
     personalSideCard,
     loadMore,
     footerBar,
@@ -82,7 +83,6 @@ export default {
       this.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
       this.isLogin = true;
     }
-    this.getStaredList();
     // this.loading = Loading.service({
     //   lock: true,
     //   text: 'Loading',
@@ -116,27 +116,7 @@ export default {
       this.dialogRLType = switchType;
     },
     // 前端逻辑
-    getStaredList() {
-      let param = {};
-      param.name = this.userInfo.name;
-      param.conditionCol = 0;
-      httpRequest.getStaredApproved(param).then( res => {
-        console.log(res);
-        let articleList = res.data.articleList;
-        articleList.forEach((item, index, array) => {
-            if(item.articleType == 1 || item.articleType == 4) {
-              item.time = tools.transferDate(item.time.substring(0,10))
-            }
-          });
-        this.articleList = articleList;
-      }).catch( err => {
-        this.$message({
-          type: "error",
-          message: err.ret_msg,
-          center: true
-        });
-      });
-    },
+
     // 请求
     handleLogin(formLogin) {
       // debugger

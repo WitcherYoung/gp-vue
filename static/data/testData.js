@@ -1,14 +1,51 @@
 const testStr = require("./test.js");
 const testImg = require("@/assets/logo.png");
 export default {
-    testInfo: {
-        articleTitle: "articleTitle",
-        image_url: testImg,
-        userName: "userName",
-        commentTime: "2019年4月21日 16:30:00",
-        commentOrigin: `测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin`,
-        commentReply: `测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply`,
-    },
+    testComments: [
+        {
+            articleId: "1",
+            articleTitle: "articleTitle",
+            articleType: 1,
+            replyUserInfo: {
+                image_url: testImg,
+                userName: "replyUser",
+            },
+            originUserInfo: {
+                userName: "originUser",
+            },
+            commentTime: "2019年4月21日 16:30:00",
+            commentOrigin: `测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin`,
+            commentReply: `测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply`,
+        },{
+            articleId: "1",
+            articleTitle: "articleTitle",
+            articleType: 2,
+            replyUserInfo: {
+                image_url: testImg,
+                userName: "replyUser",
+            },
+            originUserInfo: {
+                userName: "originUser",
+            },
+            commentTime: "2019年4月21日 16:30:00",
+            commentOrigin: `测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin,测试commentOrigin`,
+            commentReply: `测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply,测试commentReply`,
+        },{
+            articleId: "1",
+            articleTitle: "articleTitle",
+            articleType: 3,
+            replyUserInfo: {
+                image_url: testImg,
+                userName: "replyUser",
+            },
+            originUserInfo: {
+                userName: null,
+            },
+            commentTime: "2019年4月21日 16:30:00",
+            commentOrigin: null,
+            commentReply: `测试commentReply,`,
+        }
+    ],
     testData: [
         {
             img: testImg,
