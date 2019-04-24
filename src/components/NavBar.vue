@@ -12,6 +12,7 @@
           <li class="paddingX10" @click="hanldeClick(2)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==2}">美食</span></li>
           <li class="paddingX10" @click="hanldeClick(3)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==3}">游玩</span></li>
           <li class="paddingX10" @click="hanldeClick(4)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==4}">趣事</span></li>
+          <li class="paddingX10" @click="hanldeClick(5)"><span :class="{'padding5X': true, 'nav-select': true, 'nav-selected': isSelected==5}">推荐</span></li>
         </ul>
       </div>
     </div>
@@ -53,7 +54,7 @@ import popoverMenu from "@/components/PopoverMenu.vue"
 export default {
   data() {
     return {
-      searchStr: ""
+      searchStr: "",
     };
   },
   props: {

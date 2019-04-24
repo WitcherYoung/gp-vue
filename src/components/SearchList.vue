@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-article-list padding10">
+  <div class="search-article-list padding10">
     <div v-if="articleList.length == 0" class="no-data padding20"></div>
     <div v-else class="minHeight470">
       <div v-for="(item, index) in articleList" :key="index">
@@ -68,10 +68,6 @@ export default {
     };
   },
   props: {
-    title: {
-      type: String,
-      default: ""
-    },
     articleList: {
       type: Array,
       default: []

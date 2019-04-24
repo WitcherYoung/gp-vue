@@ -6,12 +6,22 @@
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
       <div class="width75pec article-list-shadow backColorFFF">
-        <div class="paddingX10">
-          <filter-bar :isSelected="isFilterSelected" @hanldeClick="filterClick"></filter-bar>
-          <article-list :articleType="isNavSelected" :articleList="articleList"></article-list>
+        <div v-if="isNavSelected==5">
+          <div class="paddingX10">
+            <personal-articles :articleList="recommendList"></personal-articles>
+          </div>
+          <div>
+            <load-more :isMore="true"></load-more>
+          </div>
         </div>
-        <div>
-          <load-more :isReflash="isReflash" @handleLoad="handleLoad()"></load-more>
+        <div v-else>
+          <div class="paddingX10">
+            <filter-bar :isSelected="isFilterSelected" @hanldeClick="filterClick"></filter-bar>
+            <article-list :articleType="isNavSelected" :articleList="articleList"></article-list>
+          </div>
+          <div>
+            <load-more :isReflash="isReflash" :isMore="isMore" @handleLoad="handleLoad()"></load-more>
+          </div>
         </div>
       </div>
     </div>
@@ -32,12 +42,30 @@
           <register @handleRegister="handleRegister"></register>
         </div>
       </el-dialog>
+      <el-dialog class="search-dialog" :visible.sync="searchDialog.visible" center width="60%">
+        <div slot="title" class="title textAlignL">
+          <i class="fa fa-search-plus"></i>
+          <span> 搜索结果</span>
+        </div>
+        <div v-loading="searchDialog.loading">
+          <div v-if="searchDialog.hasData" class="search-body">
+            <search-list :articleList="searchDialog.articleList"></search-list>
+          </div>
+          <div v-else class="search-nodata height400 flex-justify-align">
+            <div class="flex-column">
+              <img class="width100 height100" :src="searchDialog.noDataImg" alt="">
+              <span class="colorcccccc textAlignC">暂无搜索结果</span>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 // import test from "../../static/data/testData.js"
+import noSearchRes from "@/assets/img/暂无搜索结果.png";
 import httpRequest from "@/api";
 import tools from "@/utils/tools.js"
 import axios from "axios";
@@ -45,7 +73,9 @@ import axios from "axios";
 import navBar from "@/components/NavBar.vue";
 import filterBar from "@/components/FilterBar.vue";
 import articleList from "@/components/ArticleList.vue";
+import personalArticles from "@/components/PersonalArticles.vue";
 import personalSideCard from "@/components/PersonalSideCard.vue";
+import searchList from "@/components/SearchList.vue";
 import loadMore from "@/components/LoadMore.vue";
 import footerBar from "@/components/FooterBar.vue";
 import login from "@/components/login.vue";
@@ -61,17 +91,26 @@ export default {
       isLogin: false,
       userInfo: {},
       isChangeNav: false,
-      isFilterSelected: "recommend",
+      isFilterSelected: 1,
       // articleList: test.testData,
       articleList: [],
+      recommendList: [],
       isReflash: false,
+      isMore: false,
       loadParam: {
         newsType: 1,
         filterType: 1,
         pageNum: 1,
       },
       rlVisible: false,
-      dialogRLType: null,
+      searchDialog: {
+        articleList: [],
+        visible: false,
+        hasData: false,
+        loading: false,
+        noDataImg: noSearchRes
+      },
+      dialogRLType: null
     }
   },
   components: {
@@ -79,6 +118,8 @@ export default {
     filterBar,
     articleList,
     personalSideCard,
+    personalArticles,
+    searchList,
     loadMore,
     footerBar,
     login,
@@ -105,17 +146,21 @@ export default {
   methods: {
     // 交互
     navClick(navType) {
-      this.loading = Loading.service({
-        text: 'Loading...',
-        background: 'rgba(0, 0, 0, 0.7)'
-      });
-      this.isNavSelected = navType;
-      // 改变 this.$store.state.isNavSelected
-      this.$store.commit("changeIsNavSelected", navType);
-      this.loadParam.newsType = navType;
-      this.isChangeNav = true;
-      this.loadParam.pageNum = 1;
-      this.getArticleList();
+        this.loading = Loading.service({
+          text: 'Loading...',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        this.isNavSelected = navType;
+        // 改变 this.$store.state.isNavSelected
+        this.$store.commit("changeIsNavSelected", navType);
+        this.loadParam.newsType = navType;
+        this.isChangeNav = true;
+        this.loadParam.pageNum = 1;
+      if(this.loadParam.newsType!=5) {
+        this.getArticleList();
+      }else {
+        this.getRecommendList();
+      }
     },
     handleLRClick(rlType) {
       this.dialogRLType = rlType;
@@ -129,11 +174,21 @@ export default {
     },
     filterClick(filterType) {
       this.isFilterSelected = filterType;
+      this.loadParam.filterType = filterType;
+      this.loadParam.pageNum = 1;
+      this.loading = Loading.service({
+        text: 'Loading...',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      this.getArticleList();
     },
     // 前端逻辑
     // 请求
     getArticleList() {
       httpRequest.getArticles(this.loadParam).then( res => {
+        if(res.data.articleList.length == 0) {
+          this.isMore = true;
+        }
         // 判断导航菜单是否切换
         if(!this.isChangeNav) {
           // 导航菜单未切换, 判断查询页数
@@ -157,6 +212,40 @@ export default {
         }, 500);
         this.isReflash = false;
         this.loadParam.pageNum ++;
+      }).catch( err => {
+        console.error(err);
+      });
+    },
+    getRecommendList() {
+      let params = {
+        username: this.userInfo.username,
+      }
+      httpRequest.getRecommend(params).then( res => {
+        console.log(res);
+        this.recommendList = res.data.articleList;
+        // // 判断导航菜单是否切换
+        // if(!this.isChangeNav) {
+        //   // 导航菜单未切换, 判断查询页数
+        //   if(this.loadParam.pageNum == 1) {
+        //     this.articleList = res.data.articleList
+        //   }else {
+        //     this.articleList = this.articleList.concat(res.data.articleList);
+        //   }
+        // }else {
+        //   // 导航菜单切换, 查询第一页数据
+        //   this.articleList = res.data.articleList;
+        //   this.isChangeNav = false;
+        // }
+        // if(this.loadParam.newsType == 1|| this.loadParam.newsType == 4) {
+        //   this.articleList.forEach((item, index, array) => {
+        //     item.time = tools.transferDate(item.time.substring(0,10))
+        //   });
+        // }
+        setTimeout(() => {
+          this.loading.close();
+        }, 500);
+        // this.isReflash = false;
+        // this.loadParam.pageNum ++;
       }).catch( err => {
         console.error(err);
       });
@@ -233,7 +322,27 @@ export default {
       window.location.reload();
     },
     handleSearch(searchStr) {
+      let param = {
+        searchStr: searchStr,
+      }
       console.log(searchStr);
+      this.searchDialog.visible = true;
+      this.searchDialog.loading = true;
+      httpRequest.search(param).then( res => {
+        console.log(res);
+        let hasData = res.data.articleList.length;
+        if(hasData) {
+          this.searchDialog.hasData = true;
+          this.searchDialog.articleList = res.data.articleList
+        }else {
+          this.searchDialog.hasData = false;
+        }
+        setTimeout(() => {
+          this.searchDialog.loading = false;
+        }, 800);
+      }).catch( err => {
+        console.error(err);
+      });
     },    
   }
 };

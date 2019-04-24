@@ -85,6 +85,8 @@ const getTags = (param) => get(baseURL + '/tags', param);
 const getStaredApproved = (param) => get(baseURL + '/staredApproved', param);
 const getComments = (param) => get(baseURL + '/getComments', param);
 const getPersonalInfo = (param) => get(baseURL + '/getPersonalInfo', param);
+const search = (param) => get(baseURL + '/searchQuery', param);
+const getRecommend = (param) => get(baseURL + '/recommend', param);
 
 const postRegister = (param) => post(baseURL + '/register', param);
 const postLogin = (param) => post(baseURL + '/login', param); 
@@ -110,5 +112,7 @@ export default {
     postComment,
     getComments,
     getPersonalInfo,
-    postPersonalInfo
+    postPersonalInfo,
+    search,
+    getRecommend
 }

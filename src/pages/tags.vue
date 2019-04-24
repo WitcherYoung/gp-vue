@@ -146,6 +146,44 @@ export default {
         // console.log(res);
         this.allTags = res.data.notSelected;
         this.chosenArr = res.data.selected;
+        console.log("chosenArr ", this.chosenArr);
+      }).catch( err => {
+        this.$message({
+          type: "error",
+          message: err.ret_msg,
+          center: true
+        });
+      });
+    },
+    handleTransferChange(value, direction, movedKeys) {
+      console.log(value, direction, movedKeys);
+    },
+    handleSaveTags() {
+      console.log(this.chosenArr);
+      let chosenArr = [],param = {};
+      param.name = this.userInfo.name;
+      chosenArr = this.chosenArr.map((item, index, arr) => {
+        return this.allTags[item-1].label;
+      })
+      param.chosenArrStr = chosenArr.join("-");
+      param.chosenStr = this.chosenArr.join("-");
+      console.log(param);
+      httpRequest.saveTags(param).then( res => {
+        console.log(res);
+        if(res.ret_code == 400) {
+          this.$message({
+            type: "error",
+            message: res.err_msg,
+            center: true
+          });
+        }else {
+          this.$message({
+            type: "success",
+            message: "修改成功",
+            center: true
+          });
+        }
+        this.getTags();
       }).catch( err => {
         this.$message({
           type: "error",
@@ -222,39 +260,6 @@ export default {
     },
     handleSearch(searchStr) {
       console.log(searchStr);
-    },
-    handleTransferChange(value, direction, movedKeys) {
-      console.log(value, direction, movedKeys);
-    },
-    handleSaveTags() {
-      console.log(this.chosenArr);
-      let param = {};
-      param.name = this.userInfo.name;
-      param.chosenStr = this.chosenArr.join("-");
-      console.log(param);
-      httpRequest.saveTags(param).then( res => {
-        console.log(res);
-        if(res.ret_code == 400) {
-          this.$message({
-            type: "error",
-            message: res.err_msg,
-            center: true
-          });
-        }else {
-          this.$message({
-            type: "success",
-            message: "修改成功",
-            center: true
-          });
-        }
-        this.getTags();
-      }).catch( err => {
-        this.$message({
-          type: "error",
-          message: err.ret_msg,
-          center: true
-        });
-      });
     }
   }
 };
