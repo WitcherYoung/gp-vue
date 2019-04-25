@@ -6,23 +6,14 @@
     <div class="width80pec marginXauto paddingTop100">
       <personal-side-card></personal-side-card>
       <div class="width75pec article-list-shadow backColorFFF">
-        <div v-if="isNavSelected==5">
-          <div class="paddingX10">
-            <personal-articles :articleList="recommendList"></personal-articles>
-          </div>
-          <div>
-            <load-more :isMore="true"></load-more>
-          </div>
+        <div v-if="isNavSelected==5" class="paddingX10">
+          <personal-articles :articleList="recommendList"></personal-articles>
         </div>
-        <div v-else>
-          <div class="paddingX10">
-            <filter-bar :isSelected="isFilterSelected" @hanldeClick="filterClick"></filter-bar>
-            <article-list :articleType="isNavSelected" :articleList="articleList"></article-list>
-          </div>
-          <div>
-            <load-more :isReflash="isReflash" :isMore="isMore" @handleLoad="handleLoad()"></load-more>
-          </div>
+        <div v-else class="paddingX10">
+          <filter-bar :isSelected="isFilterSelected" @hanldeClick="filterClick"></filter-bar>
+          <article-list :articleType="isNavSelected" :articleList="articleList"></article-list>
         </div>
+        <load-more :isReflash="isReflash" :isMoreType="isNavSelected==5?0:1" @handleLoad="handleLoad()"></load-more>
       </div>
     </div>
     <div class="right-bar"></div>
@@ -96,7 +87,6 @@ export default {
       articleList: [],
       recommendList: [],
       isReflash: false,
-      isMore: false,
       loadParam: {
         newsType: 1,
         filterType: 1,
@@ -139,9 +129,15 @@ export default {
       text: 'Loading',
       background: 'rgb(255, 255, 255)'
     });
-    setTimeout(() => {
-      this.getArticleList();
-    }, 500);
+    if(this.isNavSelected==5) {
+      setTimeout(() => {
+        this.getRecommendList();
+      }, 500);
+    }else {
+      setTimeout(() => {
+        this.getArticleList();
+      }, 500);
+    }
   },
   methods: {
     // 交互
@@ -186,9 +182,6 @@ export default {
     // 请求
     getArticleList() {
       httpRequest.getArticles(this.loadParam).then( res => {
-        if(res.data.articleList.length == 0) {
-          this.isMore = true;
-        }
         // 判断导航菜单是否切换
         if(!this.isChangeNav) {
           // 导航菜单未切换, 判断查询页数
@@ -221,40 +214,34 @@ export default {
         username: this.userInfo.username,
       }
       httpRequest.getRecommend(params).then( res => {
-        console.log(res);
+        // console.log(res);
+        res.data.articleList.forEach((item, index, array) => {
+            if(item.articleType == 1 || item.articleType == 4) {
+              item.time = tools.transferDateStr(item.time.substring(0,11))
+            }
+          });
         this.recommendList = res.data.articleList;
-        // // 判断导航菜单是否切换
-        // if(!this.isChangeNav) {
-        //   // 导航菜单未切换, 判断查询页数
-        //   if(this.loadParam.pageNum == 1) {
-        //     this.articleList = res.data.articleList
-        //   }else {
-        //     this.articleList = this.articleList.concat(res.data.articleList);
-        //   }
-        // }else {
-        //   // 导航菜单切换, 查询第一页数据
-        //   this.articleList = res.data.articleList;
-        //   this.isChangeNav = false;
-        // }
-        // if(this.loadParam.newsType == 1|| this.loadParam.newsType == 4) {
-        //   this.articleList.forEach((item, index, array) => {
-        //     item.time = tools.transferDate(item.time.substring(0,10))
-        //   });
-        // }
+        document.getElementById("toTop").click();
         setTimeout(() => {
           this.loading.close();
         }, 500);
-        // this.isReflash = false;
+        this.isReflash = false;
         // this.loadParam.pageNum ++;
       }).catch( err => {
         console.error(err);
       });
     },
-    handleLoad() {
+    handleLoad(type) {
       this.isReflash = true;
-      setTimeout(() => {
-        this.getArticleList();
-      }, 1000);
+      if(type) {
+        setTimeout(() => {
+          this.getArticleList();
+        }, 1000);
+      }else {
+        setTimeout(() => {
+          this.getRecommendList();
+        }, 1000);
+      }
     },
     handleLogin(formLogin) {
       // debugger
@@ -273,6 +260,12 @@ export default {
           setTimeout(() => {
             this.loading.close();
           }, 800);
+        }else {
+          return this.$message({
+            type: "error",
+            message: "用户名或密码错误, 请重新输入",
+            center: true
+          })
         }
       }).catch( err => {
         this.$message({
@@ -317,8 +310,19 @@ export default {
       });
     },
     handleLogout() {
-      console.log("handleLogout")
+      console.log("handleLogout");
+      let param = {
+        username: this.userInfo.username
+      }
       sessionStorage.removeItem('userInfo');
+      httpRequest.postLogout(param).then( res => {
+        console.log(res);
+      }).catch( err => {
+        console.error(err);
+      });
+      this.$router.push({
+        path: "/"
+      })
       window.location.reload();
     },
     handleSearch(searchStr) {

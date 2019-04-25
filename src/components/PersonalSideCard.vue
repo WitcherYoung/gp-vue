@@ -33,7 +33,7 @@
       </ul>
     </div>
     <div class="fixed right18pec bottom100px">
-      <a href="#">
+      <a id="toTop" href="#">
         <span class="btn-toTop border-radius btn-circle-shadow">
           <i class="fa fa-chevron-up"></i>
         </span>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { error } from 'util';
 export default {
   data() {
     return {
@@ -52,33 +53,41 @@ export default {
   mounted() {},
   methods: {
     hanldeClick(type) {
-      switch(type) {
-        case 1: 
-          this.$router.push({
-            path: "/tags"
-          });
-          break;
-        case 2: 
-          this.$router.push({
-            path: "/star"
-          });
-          break;
-        case 3: 
-          this.$router.push({
-            path: "/approve"
-          });
-          break;
-        case 4: 
-          this.$router.push({
-            path: "/myComments"
-          });
-          break;
-        case 5: 
-          this.$router.push({
-            path: "/myMessages"
-          });
-          break;
-        default:
+      if(sessionStorage.getItem("userInfo")) {
+        switch(type) {
+          case 1: 
+            this.$router.push({
+              path: "/tags"
+            });
+            break;
+          case 2: 
+            this.$router.push({
+              path: "/star"
+            });
+            break;
+          case 3: 
+            this.$router.push({
+              path: "/approve"
+            });
+            break;
+          case 4: 
+            this.$router.push({
+              path: "/myComments"
+            });
+            break;
+          case 5: 
+            this.$router.push({
+              path: "/myMessages"
+            });
+            break;
+          default:
+        }
+      }else {
+        return this.$message({
+          type: "warning",
+          message: "请先登录",
+          center: true
+        });
       }
     }
   }

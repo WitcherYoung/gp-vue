@@ -200,7 +200,18 @@ export default {
     },
     handleLogout() {
       console.log("handleLogout")
+      let param = {
+        username: this.userInfo.username
+      }
       sessionStorage.removeItem('userInfo');
+      httpRequest.postLogout(param).then( res => {
+        console.log(res);
+      }).catch( err => {
+        console.error(err);
+      });
+      this.$router.push({
+        path: "/"
+      })
       window.location.reload();
     },
     handleSearch(searchStr) {

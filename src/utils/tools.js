@@ -3,6 +3,12 @@ function transferDate(str) {
     return dateArr[0] + "年" + dateArr[1] + "月" + dateArr[2] + "日";
 }
 
+function transferDateStr(str) {
+    let time = new Date(str);
+    console.log(time.getFullYear + "年" + (time.getMonth+1) + "月" + time.getDate + "日");
+    return time.getFullYear() + "年" + (time.getMonth()+1) + "月" + time.getDate() + "日";
+}
+
 function transferTime(str) {
     let date = "", time = "", timeArr = str.split("T");
     date = transferDate(timeArr[0]);
@@ -160,6 +166,7 @@ function getCurrentTime() {
 
 export default {
     transferDate,
+    transferDateStr,
     transferTime,
     detectName,
     getCurrentTime,

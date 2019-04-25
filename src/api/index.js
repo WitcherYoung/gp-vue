@@ -95,6 +95,7 @@ const postLiked = (param) => post(baseURL + '/like', param);
 const saveTags = (param) => post(baseURL + '/saveTags', param);
 const postComment = (param) => post(baseURL + '/addComment', param);
 const postPersonalInfo = (param) => post(baseURL + '/updateInfo', param);
+const postLogout = (param) => post(baseURL + '/logout', param);
 
 export default {
     getTest,
@@ -114,5 +115,6 @@ export default {
     getPersonalInfo,
     postPersonalInfo,
     search,
-    getRecommend
+    getRecommend,
+    postLogout
 }
